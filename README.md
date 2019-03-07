@@ -1,4 +1,4 @@
-*Life Vector Bluetooth Server*
+* Life Vector Bluetooth Server *
 
 To setup the bluetooth server
 
