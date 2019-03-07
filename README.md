@@ -2,9 +2,9 @@
 
 To setup the bluetooth server
 
-1. Install GCC for C++ 17
+## 1. Install GCC for C++ 17
 
-2. System configuration
+## 2. System configuration
 
 The following sections may help users with their system configurations.
 
@@ -80,7 +80,7 @@ sudo btmgmt -i 0 connectable on
 sudo btmgmt -i 0 advertising on
 sudo btmgmt -i 0 power on
 
-3. Build & Launch
+## 3. Build & Launch
 
 GGK uses the standard autotools build process:
 
