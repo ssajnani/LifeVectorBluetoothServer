@@ -1,0 +1,966 @@
+rm -f *.o Test_Runners/*.o main UCTest ReportTest ArchLibTest SquasherTest
+All Files Cleansed
+g++ -c -w -o VisitLog.o VisitLog.cpp
+g++ -c -w -o UserVisitInfo.o UserVisitInfo.cpp
+g++ -c -w -o LocationInformation.o LocationInformation.cpp
+g++ -c -w -o CoordinateInformation.o CoordinateInformation.cpp
+g++ -c -w -o ArchivedLocation.o ArchivedLocation.cpp
+g++ -c -w -o ArchiveLibrary.o ArchiveLibrary.cpp
+g++ -c -w -o SystemTimeManager.o SystemTimeManager.cpp
+g++ -c -w -o EncryptionModule.o EncryptionModule.cpp
+g++ -c -w -o CURLplusplus.o CURLplusplus.cpp 	
+g++ -c -w -o placesAPI.o placesAPI.cpp 	
+g++ -c -w -o googleAPI.o googleAPI.cpp 	
+g++ -c -w -o RawDataRepository.o RawDataRepository.cpp
+g++ -c -w -o squasher.o squasher.cpp
+g++ -c -w -o md5.o md5.cpp
+g++ -c -w -o DataDepositor.o DataDepositor.cpp
+g++ -c -w -o Database.o Database.cpp
+g++ -c -w -o UserController.o UserController.cpp
+g++ -c -w -o hashfunc.o hashfunc.cpp
+g++ -c -w -o UserLibrary.o UserLibrary.cpp
+g++ -c -w -o user.o user.cpp
+g++ -c -w -o fetchReport.o fetchReport.cpp
+All .cpp Files Compiled!
+g++ -c -w   -c -o Test_Runners/UserControllerTest.o Test_Runners/UserControllerTest.cpp
+g++ -o UCTest Test_Runners/UserControllerTest.o placesAPI.o googleAPI.o hashfunc.o RawDataRepository.o squasher.o UserController.o EncryptionModule.o VisitLog.o SystemTimeManager.o md5.o LocationInformation.o CoordinateInformation.o CURLplusplus.o user.o DataDepositor.o ArchivedLocation.o Database.o ArchiveLibrary.o UserLibrary.o UserVisitInfo.o fetchReport.o -lm -lmysqlclient -L/usr/include/curl/lib -lcurl -lcrypto
+Running User Controller Tests For Functionality
+./UCTest
+Testing User Controller Functionality
+
+
+Attempting to Connect to Database...
+Connected to Database as: server.
+
+Creating New User: John Smith
+User and Device queried not in Database
+1234289384
+User and Device queried not in Database
+User created
+User John Smithcreated
+
+Updating json report in database with test report:
+User found in Database
+User found in Database
+Report updated
+Report updated for John Smith.
+
+Testing Fetching report from database:
+User found in Database
+Report for John Smith fetched: 
+{"key1_1":"value1_1","key1_2":"value1_2"}
+
+Testing hash function and hash reproducibility for John Smithwith password: 1234
+User found in Database
+1234289384	
+41bdcd2425662d3e0c9975f4361bdc02	
+fa9118315fe2900673f82569a72bbadd
+Hash not matched
+
+Reading and saving sample raw gps data from file to database:
+File Sample: ./SampleFiles/sample_coordinates.json:
+Sample file read.
+Data read from file:
+Entries:
+1543514400 - (43.005813, -81.274634)
+1543516200 - (43.007927, -81.275496)
+1543518000 - (43.007768, -81.275707)
+1543519800 - (43.001664, -81.277198)
+Saving data to database...
+Raw GPS Data Successfully Uploaded to Database.
+Raw GPS data saved to Database
+Sample Tracking data from sample_coordinates.json for ( John Smith, nexus5 ) is saved to database
+
+Delete User: John Smith
+User found in Database
+User deleted
+User Deletion Successful: John Smith has been removed.
+
+g++ -c -w   -c -o Test_Runners/ALibTest.o Test_Runners/ALibTest.cpp
+g++ -o ArchLibTest Test_Runners/ALibTest.o placesAPI.o googleAPI.o hashfunc.o RawDataRepository.o squasher.o UserController.o EncryptionModule.o VisitLog.o SystemTimeManager.o md5.o LocationInformation.o CoordinateInformation.o CURLplusplus.o user.o DataDepositor.o ArchivedLocation.o Database.o ArchiveLibrary.o UserLibrary.o UserVisitInfo.o fetchReport.o -lm -lmysqlclient -L/usr/include/curl/lib -lcurl -lcrypto
+Running Execution to Test Archive Library Files
+./ArchLibTest
+Testing Archive Library Functionalities
+
+Adding users, main_usr and usr1, for Archive testing.
+
+User and Device queried not in Database
+LV123289384
+User and Device queried not in Database
+User created
+User and Device queried not in Database
+archve930887
+User and Device queried not in Database
+User created
+Testing Object Creation: LocationInformation
+LocationInformation Obj creation of ID : 200 - was successful.
+
+Creating CoordinateInformation Obj
+CoordinateInformation Object creation successful
+
+Creating ArchivedLocation Object...
+ArchivedLocation object, archL, created : 
+
+~~: Archived Location Information :~~
+Location ID: 200
+Location Name: Thompson Arena
+Location Address: Western University, Lambton Drive, Stoneybrook Gardens, London, Middlesex County, Ontario, N6G 5K8, Canada
+Location Description: sports centre
+Reference Coordinate: ( 43.0031, -81.2755 )
+Boundary Limits:
+	North: 43.0034
+	East: -81.2749
+	South: 43.0027
+	West: -81.276
+
+Testing tracking log stroage obj containers 
+
+Creating UserVisitInfo obj for user-specific squash data...
+UserVisitInfo object, uvi, successfully created:
+
+Time Log:
+2018-10-25 22:05:59	 Duration: 00:50
+2018-11-15 22:05:59	 Duration: 01:40
+2018-11-25 17:00:00	 Duration: 00:15
+Visit Count: 3
+Total Time Spent: 02:45
+
+Creating VisitLog obj for squashed location...
+User Visiting Information Updated Successfully.
+uvi log addition to vl for usr1/nx5	: bool = 1
+User Visiting Information Updated Successfully.
+uvi2 created with uvi obj, directly
+uvi2 log addition to vl for 'main_usr/nx5'	 bool = 0
+Location Visit Record Information: 
+User : usr1, DeviceID : nx5
+Time Log:
+2018-10-25 22:05:59	 Duration: 00:50
+2018-11-15 22:05:59	 Duration: 01:40
+2018-11-25 17:00:00	 Duration: 00:15
+Visit Count: 3
+Total Time Spent: 02:45
+Total Visits at this Location : 3
+Total Time at this Location : 02:45
+
+
+~~~~~ Testing Archive Library Functionalities~~~~~
+ArchiveLibrary obj created.
+
+Adding location of ID - 200 to database...
+Location is not Known
+New Location, Thompson Arena, has been added to Database
+Location is Known in Database
+Location retrieved successfully from Database
+Location of ID 200has been successfully save to database
+
+Create 4 locations for archiving...
+Generate coordinates of locations
+Create locations with Google API's
+Location 400 has been found and created.
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+Location is not Known
+New Location, Delaware Hall NB - #510, has been added to Database
+Location 400 has been saved to database.
+Location 403 has been found and created.
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+Location is not Known
+New Location, Western at Lambton SB - #1996, has been added to Database
+Location 403 has been saved to database.
+Location 406 has been found and created.
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+Location is not Known
+New Location, CN Tower, has been added to Database
+Location 406 has been saved to database.
+Location 409 has been found and created.
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+Location is not Known
+New Location, MY ONTARIO FILM LOCATIONS, has been added to Database
+Location 409 has been saved to database.
+4 locations has been archived to the database
+Generatign and inserting time logs for locations into database...
+time logs generated.
+Fetch a location from database...
+Location is Known in Database
+Location retrieved successfully from Database
+Location 200 retrieved from database.
+
+
+~~: Archived Location Information :~~
+Location ID: 200
+Location Name: Thompson Arena
+Location Address: Western University, Lambton Drive, Stoneybrook Gardens, London, Middlesex County, Ontario, N6G 5K8, Canada
+Location Description: sports centre
+Reference Coordinate: ( 43.0031, -81.2755 )
+Boundary Limits:
+	North: 43.0034
+	East: -81.2749
+	South: 43.0027
+	West: -81.276
+
+Find Locations from database with various IDs. Present and not present in DB...
+Location is not Known
+No Location at id: 399
+Location is Known in Database
+Location retrieved successfully from Database
+Location 400found in DB.
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+Location is not Known
+No Location at id: 401
+Location is not Known
+No Location at id: 402
+Location is Known in Database
+Location retrieved successfully from Database
+Location 403found in DB.
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+Location is not Known
+No Location at id: 404
+Location is not Known
+No Location at id: 405
+Location is Known in Database
+Location retrieved successfully from Database
+Location 406found in DB.
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+Location is not Known
+No Location at id: 407
+Location is not Known
+No Location at id: 408
+Location is Known in Database
+Location retrieved successfully from Database
+Location 409found in DB.
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+End of Location search test
+
+Test Saving Logs to DB...
+Location is Known in Database
+User Record for 2018-10-25 22:05:59 at LocID: 200 added to Database
+User Record for 2018-11-15 22:05:59 at LocID: 200 added to Database
+User Record for 2018-11-25 17:00:00 at LocID: 200 added to Database
+uvi2 log data successfully saved to database, for usr1
+Location is Known in Database
+User Record for 2018-10-05 09:20:00 at LocID: 400 added to Database
+User Record for 2018-10-05 12:15:00 at LocID: 400 added to Database
+User Record for 2018-10-18 16:50:00 at LocID: 400 added to Database
+Log dataset 1 has been seved to Location 400 in database, for main_usr.
+Location is Known in Database
+User Record for 2018-10-20 08:45:00 at LocID: 403 added to Database
+User Record for 2018-10-29 12:45:00 at LocID: 403 added to Database
+Log dataset 2 has been seved to Location 403 in database, for main_usr.
+Location is Known in Database
+User Record for 2018-11-20 21:32:00 at LocID: 406 added to Database
+Log dataset 3 has been seved to Location 406 in database, for main_usr.
+Location is Known in Database
+User Record for 2018-11-05 21:45:00 at LocID: 409 added to Database
+Log dataset 4 has been seved to Location 409 in database, for main_usr.
+All log datasets successfully archived to database
+
+Full Archive Data retrieval from database each location: 
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+Get location visit logs from database: 
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 3
+Total Time Spent: 01:00
+Total Visits at this Location : 3
+Total Time at this Location : 01:00
+
+Test Visit Frequency and Total Visit Duration getters:
+Frequency function test passed.
+total count: 3
+main_usr count: 3
+Visit duration functions test passed. 
+total duration: 11700
+main_usr duration: 11700
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+Get location visit logs from database: 
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-10-20 08:45:00	 Duration: 03:45
+Visit Count: 2
+Total Time Spent: 07:30
+Total Visits at this Location : 2
+Total Time at this Location : 07:30
+
+Test Visit Frequency and Total Visit Duration getters:
+Frequency function test passed.
+total count: 2
+main_usr count: 2
+Visit duration functions test passed. 
+total duration: 21000
+main_usr duration: 21000
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+Get location visit logs from database: 
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-11-20 21:32:00	 Duration: 02:35
+Visit Count: 1
+Total Time Spent: 02:35
+Total Visits at this Location : 1
+Total Time at this Location : 02:35
+
+Test Visit Frequency and Total Visit Duration getters:
+Frequency function test passed.
+total count: 1
+main_usr count: 1
+Visit duration functions test passed. 
+total duration: 9300
+main_usr duration: 9300
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+Get location visit logs from database: 
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-11-05 21:45:00	 Duration: 04:00
+Visit Count: 1
+Total Time Spent: 04:00
+Total Visits at this Location : 1
+Total Time at this Location : 04:00
+
+Test Visit Frequency and Total Visit Duration getters:
+Frequency function test passed.
+total count: 1
+main_usr count: 1
+Visit duration functions test passed. 
+total duration: 14400
+main_usr duration: 14400
+User Visit Logs for main_usr:
+User is in Database
+user log retrieved
+User at LocID: 400
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 5
+Total Time Spent: 01:40
+
+end of archive tests
+g++ -c -w   -c -o Test_Runners/TestSquash.o Test_Runners/TestSquash.cpp
+g++ -o SquasherTest Test_Runners/TestSquash.o placesAPI.o googleAPI.o hashfunc.o RawDataRepository.o squasher.o UserController.o EncryptionModule.o VisitLog.o SystemTimeManager.o md5.o LocationInformation.o CoordinateInformation.o CURLplusplus.o user.o DataDepositor.o ArchivedLocation.o Database.o ArchiveLibrary.o UserLibrary.o UserVisitInfo.o fetchReport.o -lm -lmysqlclient -L/usr/include/curl/lib -lcurl -lcrypto
+Running Test of Squasher Algorithm
+./SquasherTest
+Squasher Algorothm Test: 
+Create Test User...
+User and Device queried not in Database
+LifeVector123289384
+User and Device queried not in Database
+User created
+Test User Created
+Entries:
+1543514400 - (43.005813, -81.274634)
+1543516200 - (43.007927, -81.275496)
+1543518000 - (43.007768, -81.275707)
+1543519800 - (43.001664, -81.277198)
+Squash sample raw dataset
+Location is not Known
+New Location, Alumni Hall EB - #141, has been added to Database
+Location is not Known
+New Location, Weldon Library - #1284, has been added to Database
+Location is not Known
+New Location, Subway, has been added to Database
+Location is Known in Database
+User Record for 2018-11-29 13:00:00 at LocID: 410 added to Database
+Location is Known in Database
+User Record for 2018-11-29 13:30:00 at LocID: 411 added to Database
+Location is Known in Database
+User Record for 2018-11-29 14:30:00 at LocID: 412 added to Database
+Squash successful.
+g++ -o ReportTest Test_Runners/fetchTest.cpp placesAPI.o googleAPI.o hashfunc.o RawDataRepository.o squasher.o UserController.o EncryptionModule.o VisitLog.o SystemTimeManager.o md5.o LocationInformation.o CoordinateInformation.o CURLplusplus.o user.o DataDepositor.o ArchivedLocation.o Database.o ArchiveLibrary.o UserLibrary.o UserVisitInfo.o fetchReport.o -lm -lmysqlclient -L/usr/include/curl/lib -lcurl -lcrypto
+Running Test for Generating Sample Report for Front End
+./ReportTest
+Report Fetching and Creation Tests:
+User and Device queried not in Database
+LV123289384
+User and Device queried not in Database
+User created
+User and Device queried not in Database
+archve930887
+User and Device queried not in Database
+User created
+LocInfo: 
+200 - has been created.
+Western University, Lambton Drive, Stoneybrook Gardens, London, Middlesex County, Ontario, N6G 5K8, Canada
+Thompson Arena
+sports centre
+Coordinate Object created
+ArchivedLocation object created: archL : 
+
+~~: Archived Location Information :~~
+Location ID: 200
+Location Name: Thompson Arena
+Location Address: Western University, Lambton Drive, Stoneybrook Gardens, London, Middlesex County, Ontario, N6G 5K8, Canada
+Location Description: sports centre
+Reference Coordinate: ( 43.0031, -81.2755 )
+Boundary Limits:
+	North: 43.0034
+	East: -81.2749
+	South: 43.0027
+	West: -81.276
+
+UserVisitInfo object created : uvi
+Time Log:
+2018-10-25 22:05:59	 Duration: 00:50
+2018-11-15 22:05:59	 Duration: 01:40
+2018-11-25 17:00:00	 Duration: 00:15
+Visit Count: 3
+Total Time Spent: 02:45
+
+User Visiting Information Updated Successfully.
+VisitLog vl is populated with uvi - 1
+User Visiting Information Updated Successfully.
+~~~~~ Testing Library ~~~~~
+add from above
+Location is not Known
+New Location, Thompson Arena, has been added to Database
+1
+Location is Known in Database
+Location retrieved successfully from Database
+2
+200
+Time Log:
+2018-10-25 22:05:59	 Duration: 00:50
+2018-11-15 22:05:59	 Duration: 01:40
+2018-11-25 17:00:00	 Duration: 00:15
+Visit Count: 3
+Total Time Spent: 02:45
+
+coords in array
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+Location is not Known
+New Location, Delaware Hall NB - #510, has been added to Database
+new location added to DB
+here: 0, id 400
+check - reached
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+Location is not Known
+New Location, Western at Lambton SB - #1996, has been added to Database
+new location added to DB
+here: 1, id 403
+check - reached
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+Location is not Known
+New Location, CN Tower, has been added to Database
+new location added to DB
+here: 2, id 406
+check - reached
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+Location is not Known
+New Location, MY ONTARIO FILM LOCATIONS, has been added to Database
+new location added to DB
+here: 3, id 409
+check - reached
+ 4 locations archived
+end of test
+inserting time logs for locations: 
+t_log populated
+single fetch
+Location is Known in Database
+Location retrieved successfully from Database
+200
+
+~~: Archived Location Information :~~
+Location ID: 200
+Location Name: Thompson Arena
+Location Address: Western University, Lambton Drive, Stoneybrook Gardens, London, Middlesex County, Ontario, N6G 5K8, Canada
+Location Description: sports centre
+Reference Coordinate: ( 43.0031, -81.2755 )
+Boundary Limits:
+	North: 43.0034
+	East: -81.2749
+	South: 43.0027
+	West: -81.276
+
+the incredible loop (id : 399 - 410)
+Location is not Known
+No Location at id: 399
+Location is Known in Database
+Location retrieved successfully from Database
+here: 0, id 400
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+Location is not Known
+No Location at id: 401
+Location is not Known
+No Location at id: 402
+Location is Known in Database
+Location retrieved successfully from Database
+here: 1, id 403
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+Location is not Known
+No Location at id: 404
+Location is not Known
+No Location at id: 405
+Location is Known in Database
+Location retrieved successfully from Database
+here: 2, id 406
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+Location is not Known
+No Location at id: 407
+Location is not Known
+No Location at id: 408
+Location is Known in Database
+Location retrieved successfully from Database
+here: 3, id 409
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+Location is Known in Database
+User Record for 2018-10-25 22:05:59 at LocID: 200 added to Database
+User Record for 2018-11-15 22:05:59 at LocID: 200 added to Database
+User Record for 2018-11-25 17:00:00 at LocID: 200 added to Database
+loc 200 added with log
+Location is Known in Database
+User Record for 2018-10-05 09:20:00 at LocID: 400 added to Database
+User Record for 2018-10-05 12:15:00 at LocID: 400 added to Database
+User Record for 2018-10-18 16:50:00 at LocID: 400 added to Database
+Location is Known in Database
+User Record for 2018-10-20 08:45:00 at LocID: 403 added to Database
+User Record for 2018-10-29 12:45:00 at LocID: 403 added to Database
+Location is Known in Database
+User Record for 2018-11-20 21:32:00 at LocID: 406 added to Database
+Location is Known in Database
+User Record for 2018-11-05 21:45:00 at LocID: 409 added to Database
+logs archived to related locations
+
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 400
+Location Name: Delaware Hall NB - #510
+Location Address:  London ON N6G Canada
+Location Description: premise
+Reference Coordinate: ( 43.0086, -81.269 )
+Boundary Limits:
+	North: 43.01
+	East: -81.2676
+	South: 43.0073
+	West: -81.2703
+
+User is in Database
+user log retrieved
+User at LocID: 400
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 5
+Total Time Spent: 01:40
+
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 3
+Total Time Spent: 01:00
+Total Visits at this Location : 3
+Total Time at this Location : 01:00
+
+count functions test passed 
+total count: 3
+main_usr count: 3
+duration functions test passed 
+total duration: 11700
+main_usr duration: 11700
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 403
+Location Name: Western at Lambton SB - #1996
+Location Address:  London ON N6A 5B9 Canada
+Location Description: premise
+Reference Coordinate: ( 43.0056, -81.276 )
+Boundary Limits:
+	North: 43.0067
+	East: -81.2747
+	South: 43.004
+	West: -81.2774
+
+User is in Database
+user log retrieved
+User at LocID: 400
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 5
+Total Time Spent: 01:40
+
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-10-20 08:45:00	 Duration: 03:45
+Visit Count: 2
+Total Time Spent: 07:30
+Total Visits at this Location : 2
+Total Time at this Location : 07:30
+
+count functions test passed 
+total count: 2
+main_usr count: 2
+duration functions test passed 
+total duration: 21000
+main_usr duration: 21000
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 406
+Location Name: CN Tower
+Location Address: 301 Front St W, Toronto, ON M5V 2T6, Canada
+Location Description: establishment, point_of_interest, premise
+Reference Coordinate: ( 43.6426, -79.3871 )
+Boundary Limits:
+	North: 43.6439
+	East: -79.3857
+	South: 43.6412
+	West: -79.3884
+
+User is in Database
+user log retrieved
+User at LocID: 400
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 5
+Total Time Spent: 01:40
+
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-11-20 21:32:00	 Duration: 02:35
+Visit Count: 1
+Total Time Spent: 02:35
+Total Visits at this Location : 1
+Total Time at this Location : 02:35
+
+count functions test passed 
+total count: 1
+main_usr count: 1
+duration functions test passed 
+total duration: 9300
+main_usr duration: 9300
+Location is Known in Database
+Location retrieved successfully from Database
+
+~~: Archived Location Information :~~
+Location ID: 409
+Location Name: MY ONTARIO FILM LOCATIONS
+Location Address:  100 Queen St W Toronto ON M5G 1P5 Canada
+Location Description: establishment, point_of_interest
+Reference Coordinate: ( 43.6534, -79.3841 )
+Boundary Limits:
+	North: 43.6548
+	East: -79.3827
+	South: 43.6521
+	West: -79.3854
+
+User is in Database
+user log retrieved
+User at LocID: 400
+Time Log:
+2018-10-05 09:20:00	 Duration: 00:20
+Visit Count: 5
+Total Time Spent: 01:40
+
+Location is Known in Database
+Location Visit Record Information: 
+User : main_usr, DeviceID : nx5
+Time Log:
+2018-11-05 21:45:00	 Duration: 04:00
+Visit Count: 1
+Total Time Spent: 04:00
+Total Visits at this Location : 1
+Total Time at this Location : 04:00
+
+count functions test passed 
+total count: 1
+main_usr count: 1
+duration functions test passed 
+total duration: 14400
+main_usr duration: 14400
+
+~~~~~: Fetching Report :~~~~~
+
+{
+    " 100 Queen St W Toronto ON M5G 1P5 Canada\t\n": {
+        "desciption": "",
+        "name": "MY ONTARIO FILM LOCATIONS\t\n",
+        "totalTimeSpent": "",
+        "totalVisits": "45"
+    },
+    " London ON N6A 5B9 Canada\t\n": {
+        "desciption": "",
+        "name": "Western at Lambton SB - #1996\t\n",
+        "totalTimeSpent": "",
+        "totalVisits": "45"
+    },
+    " London ON N6G Canada\t\n": {
+        "desciption": "",
+        "name": "Delaware Hall NB - #510\t\n",
+        "totalTimeSpent": "",
+        "totalVisits": "20"
+    },
+    "301 Front St W, Toronto, ON M5V 2T6, Canada\t\n": {
+        "desciption": "",
+        "name": "CN Tower\t\n",
+        "totalTimeSpent": "",
+        "totalVisits": "32"
+    }
+}
+
+Report Processed
+
+
+
+End of Test
+Compile and Run All Tests - Successful!

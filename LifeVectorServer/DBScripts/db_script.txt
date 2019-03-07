@@ -1,0 +1,29 @@
+CREATE USER IF NOT EXISTS 'server'@'localhost';
+
+SET PASSWORD FOR 'server'@'localhost' = PASSWORD('LifeVector123');
+
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON * . * TO 'server'@'localhost';
+
+CREATE DATABASE IF NOT EXISTS LifeVector;
+
+USE LifeVector;
+
+CREATE TABLE IF NOT EXISTS User(
+    username VARCHAR(10) NOT NULL,
+    deviceID VARCHAR(10) NOT NULL,
+    hash VARCHAR(128),
+    salt CHAR(128),
+    report LONGTEXT,
+    syncTime INT UNSIGNED,
+    reportTime INT UNSIGNED,
+    PRIMARY KEY (username, deviceID)
+);
+
+CREATE TABLE IF NOT EXISTS GPSUnprocessed(
+  timeStamp INT UNSIGNED NOT NULL PRIMARY KEY,
+  latitude DECIMAL(8, 6) NOT NULL,
+  longitude DECIMAL(9, 6) NOT NULL,
+  devID VARCHAR(10) NOT NULL
+);

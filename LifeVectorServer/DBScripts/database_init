@@ -1,0 +1,71 @@
+CREATE USER IF NOT EXISTS 'server'@'localhost';
+
+SET PASSWORD FOR 'server'@'localhost' = PASSWORD('LifeVector123');
+
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON *.* TO 'server'@'localhost';
+
+CREATE DATABASE IF NOT EXISTS LifeVector;
+
+USE LifeVector;
+
+CREATE TABLE IF NOT EXISTS User(
+    username VARCHAR(25) NOT NULL,
+    deviceID VARCHAR(25) NOT NULL,
+    hash VARCHAR(128),
+    salt CHAR(128),
+    report LONGTEXT,
+    syncTime INT UNSIGNED,
+    reportTime INT UNSIGNED,
+    PRIMARY KEY (username, deviceID)
+);
+
+CREATE TABLE IF NOT EXISTS GPSUnprocessed(
+    timeStamp BIGINT NOT NULL,
+    latitude DECIMAL(9, 7) NOT NULL,
+    longitude DECIMAL(10, 7) NOT NULL,
+    username VARCHAR(25) NOT NULL,
+    deviceID VARCHAR(25) NOT NULL,
+    PRIMARY KEY (timeStamp),
+    KEY (username, deviceID),
+
+    FOREIGN KEY (username, deviceID)
+    REFERENCES User(username, deviceID)
+    ON UPDATE CASCADE 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ArchivedLocations(
+    locationID INT NOT NULL,
+    locationName VARCHAR(60),
+    address VARCHAR(256),
+    latitudePosition DECIMAL(9, 7) NOT NULL,
+    longitudePosition DECIMAL(10, 7) NOT NULL,
+    northBound DECIMAL(10, 8) NOT NULL,
+    southBound DECIMAL(10, 8) NOT NULL,
+    eastBound DECIMAL(11, 8) NOT NULL,
+    westBound DECIMAL(11, 8) NOT NULL,
+    description VARCHAR(256),
+    PRIMARY KEY (locationID)
+);
+
+CREATE TABLE IF NOT EXISTS VisitLog(
+    visitTime BIGINT NOT NULL,
+    locationID INT NOT NULL,
+    duration INT NOT NULL,
+    username VARCHAR(25) NOT NULL,
+    deviceID VARCHAR(25) NOT NULL,
+    PRIMARY KEY (visitTime),
+    KEY (locationID),
+    KEY (username, deviceID),
+
+    FOREIGN KEY (locationID)
+        REFERENCES ArchivedLocations(locationID)
+        ON UPDATE CASCADE 
+        ON DELETE RESTRICT,
+    FOREIGN KEY (username, deviceID)
+        REFERENCES User(username, deviceID)
+        ON UPDATE CASCADE 
+        ON DELETE CASCADE
+);
